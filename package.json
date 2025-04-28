@@ -1,7 +1,7 @@
 {
   "name": "@atosjs/azura",
   "description": "Azura is a framework for building APIs with TypeScript and JavaScript.",
-  "version": "2.0.0",
+  "version": "3.0.1",
   "module": "dist/index.mjs",
   "bin": {
     "azura": "dist/cli/index.js"
@@ -40,8 +40,8 @@
   "author": "Rabi & Wyntch",
   "license": "ISC",
   "scripts": {
-    "build:ts": "tsc",
-    "build:cli": "cpy \"cli/**/*\" dist/cli --dereference",
+    "build:ts": "tsup",
+    "build:cli": "cpy \"cli/**/*\" dist/cli",
     "build": "npm run build:ts && npm run build:cli"
   },
   "devDependencies": {
