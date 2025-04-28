@@ -24,13 +24,13 @@
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yeyTaken/atosjs/tree/1.0.0/packages/azura.git",
+    "url": "https://github.com/0xviny/AzuraV2",
     "directory": "/"
   },
   "bugs": {
-    "url": "https://github.com/yeyTaken/atosjs/issues"
+    "url": "https://github.com/0xviny/AzuraV2/issues"
   },
-  "homepage": "https://github.com/yeyTaken/atosjs/tree/1.0.0/packages/azura#readme",
+  "homepage": "https://github.com/0xviny/AzuraV2#readme",
   "keywords": [
     "web",
     "framework",
