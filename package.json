@@ -40,7 +40,9 @@
   "author": "Rabi & Wyntch",
   "license": "ISC",
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,mjs --dts --out-dir dist && tsup cli/index.ts --format cjs,mjs --out-dir dist/cli"
+    "build:ts": "tsc",
+    "build:cli": "cpy \"cli/**/*\" dist/cli --dereference",
+    "build": "npm run build:ts && npm run build:cli"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.1",
