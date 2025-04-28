@@ -1,0 +1,7 @@
+import { Server } from '@atosjs/azura';
+import { HelloController } from './controllers/HelloController';
+
+const app = new Server({ port: 3000, cluster: false });
+
+app.load([HelloController]);
+app.listen();
