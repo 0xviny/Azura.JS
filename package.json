@@ -1,16 +1,16 @@
 {
   "name": "@atosjs/azura",
   "description": "Azura is a framework for building APIs with TypeScript and JavaScript.",
-  "version": "3.0.1",
-  "module": "dist/index.mjs",
+  "version": "3.1.0",
+  "module": "dist/src/index.mjs",
   "bin": {
-    "azura": "dist/cli/index.js"
+    "azura": "dist/cli/index.cjs"
   },
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/src/index.mjs",
+      "require": "./dist/src/index.cjs",
+      "types": "./dist/src/index.d.ts"
     },
     "./cli": {
       "import": "./dist/cli/index.mjs",
@@ -20,11 +20,11 @@
   "files": [
     "dist"
   ],
-  "main": "dist/index.cjs",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.cjs",
+  "types": "dist/src/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/0xviny/AzuraV2",
+    "url": "git+https://github.com/0xviny/AzuraV2.git",
     "directory": "/"
   },
   "bugs": {
@@ -40,9 +40,7 @@
   "author": "Rabi & Wyntch",
   "license": "ISC",
   "scripts": {
-    "build:ts": "tsup",
-    "build:cli": "cpy \"cli/**/*\" dist/cli",
-    "build": "npm run build:ts && npm run build:cli"
+    "build": "tsup"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.1",

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import "reflect-metadata";
 import { Command } from "commander";
 import { serve } from "./commands/serve";
