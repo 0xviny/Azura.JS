@@ -1,7 +1,7 @@
 {
   "name": "@atosjs/azura",
   "description": "Azura is a framework for building APIs with TypeScript and JavaScript.",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "module": "dist/src/index.mjs",
   "bin": {
     "azura": "dist/cli/index.cjs"

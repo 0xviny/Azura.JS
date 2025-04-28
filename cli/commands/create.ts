@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import ejs from "ejs";
 
-const templateRoot = path.resolve(__dirname, "../templates");
+const templateRoot = path.resolve(__dirname, "../cli/templates");
 
 async function copyTemplate(srcDir: string, destDir: string, context: Record<string, any> = {}) {
   await fs.promises.mkdir(destDir, { recursive: true });
