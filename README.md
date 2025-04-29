@@ -1,6 +1,8 @@
-# 📖 Azura
+[![Azura](./assets/logo.png)](https://github.com/0xviny/AzuraV2)
 
-> **Azura** é um microframework minimalista e poderoso para criação de APIs web rápidas e modernas, usando **TypeScript** e **JavaScript**.
+# Azura
+
+> **Azura** é um microframework web minimalista, poderoso e moderno, feito para APIs rápidas e modulares usando **TypeScript** ou **JavaScript**.
 
 [![License](https://img.shields.io/badge/license-ISC-blue.svg)](./LICENSE)
 [![npm version](https://img.shields.io/npm/v/@atosjs/azura.svg)](https://www.npmjs.com/package/@atosjs/azura)
@@ -10,13 +12,14 @@
 
 ## ✨ Features
 
-- 🚀 Rápido, minimalista e moderno.
-- 📦 Suporte nativo a **TypeScript** e **JavaScript**.
-- 🛠️ CLI poderosa para criar projetos em segundos.
-- 🧩 Estrutura modular baseada em **Controllers**, **Services** e **Plugins**.
-- 🌎 Ideal para APIs REST e Microservices.
+- 🚀 Rápido, minimalista e extremamente leve.
+- 📦 Suporte completo a **TypeScript** e **JavaScript**.
+- 🛠️ CLI poderosa para gerar projetos rapidamente.
+- 🧩 Arquitetura modular baseada em **Controllers**, **Services** e **Plugins**.
+- 🔌 Sistema de middlewares e hooks.
+- 🌎 Ideal para APIs REST, aplicações serverless e microservices.
 - ⚡ Compatível com Node.js 18+ e Bun.
-- 📄 Templates prontos para criar novos projetos (`azura create`).
+- 📄 Templates prontos para acelerar o desenvolvimento.
 
 ---
 
@@ -34,21 +37,25 @@ bun add @atosjs/azura
 
 ---
 
-## 🚀 Começando rápido
+## 🚀 Começando Rápido
 
 ### Criar um novo projeto
 
 ```bash
-npx azura create my-api ts
+npm install -g @atosjs/azura
+
+azura create my-api ts
 ```
 
-- `my-api` → nome do projeto
-- `ts` → para criar um projeto em **TypeScript**
-- ou `js` → para criar um projeto em **JavaScript**
+> **Argumentos:**
+> - `my-api`: Nome da pasta/projeto.
+> - `ts`: Tipo de projeto. Use `ts` para TypeScript ou `js` para JavaScript.
 
 ---
 
-## 🛠️ Exemplo básico (JavaScript)
+## 🛠️ Exemplo Básico (JavaScript)
+
+### Servidor HTTP básico
 
 ```javascript
 const { AzuraApp } = require('@atosjs/azura');
@@ -66,17 +73,104 @@ app.listen(3000, () => {
 
 ---
 
-## 🧱 Estrutura de um Projeto Azura
+## 🧩 Exemplo Avançado (TypeScript)
+
+### Controladores e Rotas
+
+```typescript
+import { Controller, Get } from '@atosjs/azura';
+
+@Controller('/api')
+export class ExampleController {
+  @Get('/hello')
+  hello(req, res) {
+    res.json({ message: 'Hello from API!' });
+  }
+}
+```
+
+### Inicializando com Controllers
+
+```typescript
+import { AzuraApp } from '@atosjs/azura';
+import { ExampleController } from './controllers/ExampleController';
+
+const app = new AzuraApp();
+
+app.load([ExampleController]); // Carrega controladores
+app.listen(3000);
+```
+
+---
+
+## 📚 API - Documentação Completa
+
+### `new AzuraApp(options?)`
+Cria uma nova instância do servidor.
+
+**Parâmetros:**
+
+| Nome | Tipo | Padrão | Descrição |
+|:-----|:-----|:-------|:----------|
+| `options.port` | `number` | `3000` | Porta que o servidor irá escutar. |
+| `options.https` | `boolean` | `false` | Se true, habilita HTTPS. |
+| `options.http2` | `boolean` | `false` | Se true, habilita HTTP2. |
+| `options.cluster` | `boolean` | `false` | Se true, usa todos os CPUs com cluster. |
+
+---
+
+### Métodos Disponíveis
+
+| Método | Descrição |
+|:-------|:----------|
+| `app.get(path, handler)` | Registra uma rota GET. |
+| `app.post(path, handler)` | Registra uma rota POST. |
+| `app.put(path, handler)` | Registra uma rota PUT. |
+| `app.delete(path, handler)` | Registra uma rota DELETE. |
+| `app.use(middleware)` | Adiciona middlewares globais. |
+| `app.load(controllers)` | Carrega controladores usando decorators. |
+| `app.listen(port?)` | Inicia o servidor na porta especificada. |
+| `app.decorate(name, value)` | Injeta propriedades customizadas na aplicação. |
+| `app.registerPlugin(plugin, options?)` | Registra plugins personalizados. |
+| `app.onHook(type, handler)` | Adiciona hooks em eventos do ciclo de vida. |
+
+---
+
+### Request (`req`)
+
+| Propriedade | Tipo | Descrição |
+|:------------|:-----|:----------|
+| `req.query` | `object` | Parâmetros da querystring (`?chave=valor`). |
+| `req.params` | `object` | Parâmetros da rota dinâmica (`/user/:id`). |
+| `req.body` | `object` | Dados do corpo da requisição (`POST`, `PUT`). |
+| `req.cookies` | `object` | Cookies da requisição. |
+| `req.ip` | `string` | IP do cliente. |
+
+---
+
+### Response (`res`)
+
+| Método | Descrição |
+|:-------|:----------|
+| `res.send(body)` | Envia resposta simples (`text/html`). |
+| `res.json(object)` | Envia resposta em JSON (`application/json`). |
+| `res.status(code)` | Define o status da resposta (`res.status(404)`). |
+| `res.set(key, value)` | Define headers. |
+| `res.get(key)` | Recupera headers. |
+
+---
+
+## 🧱 Estrutura de Projeto Recomendada
 
 ```bash
 my-api/
 ├── src/
 │   ├── controllers/
-│   │   └── ExampleController.ts
+│   │   └── UserController.ts
 │   ├── services/
-│   │   └── ExampleService.ts
+│   │   └── UserService.ts
 │   ├── plugins/
-│   │   └── ExamplePlugin.ts
+│   │   └── AuthPlugin.ts
 │   └── index.ts
 ├── package.json
 ├── tsconfig.json (se TypeScript)
@@ -85,41 +179,25 @@ my-api/
 
 ---
 
-## 🧩 Principais Conceitos
-
-| Conceito | Descrição |
-|:--------|:----------|
-| `Controllers` | Camada de entrada (rotas HTTP). |
-| `Services` | Camada de regras de negócio e lógica. |
-| `Plugins` | Extensões que adicionam funcionalidades extras ao framework. |
-
----
-
 ## 🔥 CLI Commands
 
 | Comando | Descrição |
 |:--------|:----------|
-| `azura create <nome> <ts|js>` | Cria um novo projeto. |
-| `azura serve` | Inicia a aplicação. |
+| `azura create <project-name> <ts|js>` | Cria um novo projeto em segundos. |
+| `azura serve` | Inicia o servidor em modo desenvolvimento. |
 
 ---
 
 ## ⚙️ Requisitos
 
-- Node.js **18+**
-- Opcional: Bun para desenvolvimento mais rápido.
-
----
-
-## 📚 Documentação
-
-Em breve: [Documentação Oficial](https://github.com/0xviny/AzuraV2#readme)
+- **Node.js** versão **18 ou superior**
+- (Opcional) **Bun** para desenvolvimento mais rápido
 
 ---
 
 ## 🧑‍💻 Desenvolvimento
 
-Clone o repositório:
+Clone o repositório oficial:
 
 ```bash
 git clone https://github.com/0xviny/AzuraV2
@@ -138,25 +216,25 @@ npm run build
 
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas!  
-Siga estes passos:
+Contribuições são muito bem-vindas!
 
-1. Fork este repositório.
+1. Faça um fork do projeto.
 2. Crie uma branch: `git checkout -b minha-feature`.
 3. Commit suas mudanças: `git commit -m 'feat: minha nova feature'`.
-4. Push: `git push origin minha-feature`.
-5. Abra um Pull Request.
+4. Push para o seu fork: `git push origin minha-feature`.
+5. Abra um Pull Request!
 
 ---
 
 ## 📄 Licença
 
 Distribuído sob a licença **ISC**.  
-Veja o arquivo [LICENSE](./LICENSE) para mais detalhes.
+Veja o arquivo [LICENSE](./LICENSE) para mais informações.
 
 ---
 
 ## 💬 Agradecimentos
 
-Azura é inspirado na simplicidade de frameworks como **Express**, mas com uma abordagem moderna para APIs modulares, pequenas e altamente performáticas.  
-Obrigado por usar 💙!
+Azura é inspirado na simplicidade do **Express** e na modularidade do **Fastify**, combinando o melhor dos dois mundos para criar APIs pequenas, rápidas e modernas.
+
+Obrigado por usar **Azura**! 💙
