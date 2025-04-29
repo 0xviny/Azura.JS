@@ -7,6 +7,7 @@ import { PluginLoader, Plugin } from "./PluginLoader";
 import { uuid, HTTPError, logger } from "./Utils";
 import { applyDecorators } from "../decorators/Decorators";
 import { parse } from "querystring";
+import { DBAdapter } from "../db/Database";
 
 export interface ServerOptions {
   port?: number;
@@ -28,8 +29,9 @@ function adaptRequestHandler(handler: RequestHandler): Handler {
   };
 }
 
-export class Server {
+export class AzuraServer {
   public router = new Router();
+  public db?: DBAdapter;
   private life = new Lifecycle();
   private plugins = new PluginLoader(this);
   private server?: http.Server;

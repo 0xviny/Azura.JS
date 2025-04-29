@@ -1,12 +1,13 @@
-const { Controller, Get } = require('@atosjs/azura');
+const { Controller, Get } = require("@atosjs/azura");
 
-@Controller('/hello')
 class HelloController {
-@Get('/')
-async index(ctx) {
-ctx.response.writeHead(200, { 'Content-Type': 'application/json' });
-ctx.response.end(JSON.stringify({ message: 'Olá do <%= Name %>!' }));
-    }
-    }
+  async index(ctx) {
+    ctx.response.writeHead(200, { "Content-Type": "application/json" });
+    ctx.response.end(JSON.stringify({ message: "Olá do Test!" }));
+  }
+}
 
-    module.exports = { HelloController };
+Controller("/hello")(HelloController);
+Get("/")(HelloController.prototype, "index");
+
+module.exports = { HelloController };

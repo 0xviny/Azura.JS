@@ -58,9 +58,9 @@ azura create my-api ts
 ### Servidor HTTP básico
 
 ```javascript
-const { AzuraApp } = require('@atosjs/azura');
+const { AzuraServer } = require('@atosjs/azura');
 
-const app = new AzuraApp();
+const app = new AzuraServer();
 
 app.get('/', (req, res) => {
   res.send('Hello World from Azura!');
@@ -92,10 +92,10 @@ export class ExampleController {
 ### Inicializando com Controllers
 
 ```typescript
-import { AzuraApp } from '@atosjs/azura';
+import { AzuraServer } from '@atosjs/azura';
 import { ExampleController } from './controllers/ExampleController';
 
-const app = new AzuraApp();
+const app = new AzuraServer();
 
 app.load([ExampleController]); // Carrega controladores
 app.listen(3000);
@@ -105,7 +105,7 @@ app.listen(3000);
 
 ## 📚 API - Documentação Completa
 
-### `new AzuraApp(options?)`
+### `new AzuraServer(options?)`
 Cria uma nova instância do servidor.
 
 **Parâmetros:**

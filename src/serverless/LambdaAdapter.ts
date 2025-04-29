@@ -1,7 +1,7 @@
-import { Server } from "../core/Server";
+import { AzuraServer } from "../core/Server";
 import { APIGatewayProxyHandler } from "aws-lambda";
 
-export function lambdaHandler(app: Server): APIGatewayProxyHandler {
+export function lambdaHandler(app: AzuraServer): APIGatewayProxyHandler {
   return async (event, _ctx) => {
     const { body, headers, httpMethod, path, queryStringParameters } = event;
     let responseBody: any,

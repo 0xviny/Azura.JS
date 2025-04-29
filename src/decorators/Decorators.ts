@@ -1,13 +1,13 @@
 // src/decorators/Decorators.ts
 import "reflect-metadata";
-import { Server } from "../core/Server";
+import { AzuraServer } from "../core/Server";
 import { RouteDefinition } from "../types/RouteDefinition";
 import { HookType } from "../core/Lifecycle";
 
 type HookDef = { type: HookType; property: string };
 type SocketDef = { path: string; property: string };
 
-export function applyDecorators(app: Server, controllers: any[]): void {
+export function applyDecorators(app: AzuraServer, controllers: any[]): void {
   controllers.forEach((ControllerClass) => {
     const prefix: string = Reflect.getMetadata("prefix", ControllerClass) || "";
     const instance = new ControllerClass();

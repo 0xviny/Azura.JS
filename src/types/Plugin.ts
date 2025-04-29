@@ -1,4 +1,4 @@
-import { Server } from "../core/Server";
+import { AzuraServer as Server } from "../core/Server";
 
 export interface Plugin {
   name: string;

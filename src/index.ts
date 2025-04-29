@@ -2,7 +2,7 @@
 import "reflect-metadata";
 
 // Core
-export { Server, ServerOptions } from "./core/Server";
+export { AzuraServer, ServerOptions } from "./core/Server";
 export { Router } from "./core/Router";
 export { Lifecycle, HookType } from "./core/Lifecycle";
 export { PluginLoader, Plugin } from "./core/PluginLoader";

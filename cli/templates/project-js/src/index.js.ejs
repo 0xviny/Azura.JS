@@ -1,7 +1,7 @@
-const { Server } = require('@atosjs/azura');
+const { AzuraServer } = require('@atosjs/azura');
 const HelloController = require('./controllers/HelloController.js').HelloController;
 
-const app = new Server({ port: 3000, cluster: false });
+const app = new AzuraServer({ port: 3000, cluster: false });
 
 app.load([HelloController]);
 app.listen();

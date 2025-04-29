@@ -14,6 +14,9 @@ export const dbPlugin: Plugin = {
       case "postgres":
         adapter = new PostgresAdapter(opts.pg);
         break;
+      case "json":
+        adapter = new JSONAdapter(opts.file);
+        break;
       default:
         adapter = new JSONAdapter(opts.file);
     }
