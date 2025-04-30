@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import { cn } from "@/lib/utils"
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const codeExamples = [
   {
@@ -61,56 +61,52 @@ app.get('/protected',
 );`,
     title: "Plugins e Middlewares",
   },
-]
+];
 
 export function HeroCode() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [isTyping, setIsTyping] = useState(true)
-  const [displayedCode, setDisplayedCode] = useState("")
-  const [currentCharIndex, setCurrentCharIndex] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isTyping, setIsTyping] = useState(true);
+  const [displayedCode, setDisplayedCode] = useState("");
+  const [currentCharIndex, setCurrentCharIndex] = useState(0);
 
   useEffect(() => {
-    // Reset states when example changes
-    setIsTyping(true)
-    setDisplayedCode("")
-    setCurrentCharIndex(0)
+    setIsTyping(true);
+    setDisplayedCode("");
+    setCurrentCharIndex(0);
 
-    const code = codeExamples[activeIndex].code
-    let typingInterval: NodeJS.Timeout
+    const code = codeExamples[activeIndex].code;
+    let typingInterval: NodeJS.Timeout;
+    let changeTimeout: NodeJS.Timeout;
 
-    // Function to handle typing animation
     const typeNextChar = () => {
-      setCurrentCharIndex((prevIndex) => {
-        const nextIndex = prevIndex + 1
+      setCurrentCharIndex((prev) => {
+        const next = prev + 1;
 
-        if (nextIndex <= code.length) {
-          setDisplayedCode(code.substring(0, nextIndex))
-          return nextIndex
+        if (next <= code.length) {
+          setDisplayedCode(code.slice(0, next));
+          return next;
         } else {
-          // Typing is complete
-          setIsTyping(false)
-
-          // Schedule next example after delay
-          const timeout = setTimeout(() => {
-            setActiveIndex((prev) => (prev + 1) % codeExamples.length)
-          }, 5000)
-
-          return prevIndex // Keep the index as is
+          clearInterval(typingInterval);
+          setIsTyping(false);
+          changeTimeout = setTimeout(
+            () => setActiveIndex((i) => (i + 1) % codeExamples.length),
+            5000
+          );
+          return prev;
         }
-      })
-    }
+      });
+    };
 
-    // Start typing with a small initial delay
     const startTimeout = setTimeout(() => {
-      typingInterval = setInterval(typeNextChar, 25)
-    }, 500)
+      typingInterval = setInterval(typeNextChar, 25);
+    }, 500);
 
-    // Cleanup function
     return () => {
-      clearTimeout(startTimeout)
-      clearInterval(typingInterval)
-    }
-  }, [activeIndex, codeExamples])
+      clearTimeout(startTimeout);
+      clearInterval(typingInterval);
+      clearTimeout(changeTimeout);
+    };
+  }, [activeIndex]);
 
   return (
     <div className="relative bg-black rounded-xl overflow-hidden border border-purple-700/50">
@@ -142,7 +138,7 @@ export function HeroCode() {
               key={index}
               className={cn(
                 "w-2 h-2 rounded-full transition-colors",
-                activeIndex === index ? "bg-purple-500" : "bg-gray-600 hover:bg-gray-500",
+                activeIndex === index ? "bg-purple-500" : "bg-gray-600 hover:bg-gray-500"
               )}
               onClick={() => setActiveIndex(index)}
               aria-label={`Exemplo ${index + 1}: ${example.title}`}
@@ -151,5 +147,5 @@ export function HeroCode() {
         </div>
       </div>
     </div>
-  )
+  );
 }
