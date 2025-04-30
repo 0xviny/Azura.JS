@@ -1,15 +1,15 @@
 import { HTTPError } from "./Utils";
 
-type Handler = (req: any, res: any) => Promise<void> | void;
+type Handler = (req: any, res: any, next?: Function) => Promise<void> | void;
 
 interface MatchResult {
-  handler: Handler;
+  handlers: Handler[];
   params: Record<string, string>;
 }
 
 class Node {
   children = new Map<string, Node>();
-  handlers = new Map<string, Handler>();
+  handlers = new Map<string, Handler[]>();
   paramName?: string;
   isParam?: boolean;
 }
@@ -17,7 +17,7 @@ class Node {
 export class Router {
   private root = new Node();
 
-  add(method: string, path: string, handler: Handler): void {
+  add(method: string, path: string, ...handlers: Handler[]) {
     const segments = path.split("/").filter(Boolean);
     let node = this.root;
     for (const seg of segments) {
@@ -32,7 +32,7 @@ export class Router {
       node.children.set(seg.startsWith(":") ? ":" : seg, child);
       node = child;
     }
-    node.handlers.set(method.toUpperCase(), handler);
+    node.handlers.set(method.toUpperCase(), handlers);
   }
 
   find(method: string, path: string): MatchResult {
@@ -53,9 +53,9 @@ export class Router {
       }
     }
 
-    const handler = node.handlers.get(method.toUpperCase());
-    if (!handler) throw new HTTPError(404, { message: "Route not found" });
+    const handlers = node.handlers.get(method.toUpperCase());
+    if (!handlers) throw new HTTPError(404, { message: "Route not found" });
 
-    return { handler, params };
+    return { handlers, params };
   }
 }

@@ -45,7 +45,7 @@ export default function DocsPage() {
                 <div>
                   <div className="text-sm font-mono text-gray-400 mb-2">Crie um arquivo index.js:</div>
                   <div className="bg-gray-950 rounded-lg p-4 font-mono text-purple-300 overflow-x-auto">
-                    {`const { AzuraApp } = require('@atosjs/azura');\n\nconst app = new AzuraApp();\n\napp.get('/', (req, res) => {\n  res.send('Hello from Azura!');\n});\n\napp.listen(3000);`}
+                    {`const { AzuraServer } = require('@atosjs/azura');\n\nconst app = new AzuraServer();\n\napp.get('/', (req, res) => {\n  res.send('Hello from Azura!');\n});\n\napp.listen(3000);`}
                   </div>
                 </div>
                 <div>
@@ -57,7 +57,7 @@ export default function DocsPage() {
               </div>
               <div className="mt-8">
                 <GradientButton asChild>
-                  <Link href="/docs/getting-started">
+                  <Link href="/docs/guides/getting-started">
                     Guia completo de início <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </GradientButton>
@@ -104,7 +104,7 @@ export default function DocsPage() {
               description="Documentação detalhada da API do Azura"
               href="/docs/api"
               links={[
-                { title: "AzuraApp", href: "/docs/api/azura-app" },
+                { title: "AzuraServer", href: "/docs/api/azura-app" },
                 { title: "Controllers", href: "/docs/api/controllers" },
                 { title: "Middlewares", href: "/docs/api/middlewares" },
                 { title: "Plugins", href: "/docs/api/plugins" },
@@ -135,7 +135,7 @@ export default function DocsPage() {
               title="API REST Completa"
               description="Crie uma API REST com CRUD completo"
               language="typescript"
-              code={`import { AzuraApp, Controller, Get, Post, Put, Delete } from '@atosjs/azura';
+              code={`import { AzuraServer, Controller, Get, Post, Put, Delete } from '@atosjs/azura';
 
 @Controller('/api/users')
 class UserController {
@@ -179,7 +179,7 @@ class UserController {
   }
 }
 
-const app = new AzuraApp();
+const app = new AzuraServer();
 app.load([UserController]);
 app.listen(3000);`}
             />
@@ -188,10 +188,10 @@ app.listen(3000);`}
               title="Autenticação com JWT"
               description="Implemente autenticação segura com JWT"
               language="typescript"
-              code={`import { AzuraApp } from '@atosjs/azura';
+              code={`import { AzuraServer } from '@atosjs/azura';
 import jwt from 'jsonwebtoken';
 
-const app = new AzuraApp();
+const app = new AzuraServer();
 const JWT_SECRET = 'your-secret-key';
 
 // Middleware de autenticação

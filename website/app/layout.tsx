@@ -1,22 +1,27 @@
-import type React from "react"
-import "@/app/globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import type { Metadata } from "next"
-import Link from "next/link"
-import { Github } from "lucide-react"
-import { GradientLogo } from "@/components/gradient-logo"
+import type React from "react";
+import "@/app/globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Github } from "lucide-react";
+import { GradientLogo } from "@/components/gradient-logo";
 
 export const metadata: Metadata = {
   title: "Azura - Microframework Web Minimalista",
   description:
     "Um microframework web minimalista, poderoso e moderno, feito para APIs rápidas e modulares usando TypeScript ou JavaScript.",
-    generator: 'v0.dev'
-}
+  icons: [
+    {
+      rel: "icon",
+      url: "./logo.png",
+    },
+  ],
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
@@ -29,14 +34,11 @@ export default function RootLayout({
                 <span className="font-bold text-xl ml-2">Azura</span>
               </Link>
               <nav className="hidden md:flex items-center gap-8">
-                <Link href="/docs" className="text-gray-300 hover:text-purple-400 transition-colors">
+                <Link
+                  href="/docs"
+                  className="text-gray-300 hover:text-purple-400 transition-colors"
+                >
                   Documentação
-                </Link>
-                <Link href="/docs/examples" className="text-gray-300 hover:text-purple-400 transition-colors">
-                  Exemplos
-                </Link>
-                <Link href="/docs/api" className="text-gray-300 hover:text-purple-400 transition-colors">
-                  API
                 </Link>
                 <a
                   href="https://github.com/0xviny/AzuraV2"
@@ -46,6 +48,26 @@ export default function RootLayout({
                 >
                   <Github className="h-5 w-5" />
                   <span className="sr-only">GitHub</span>
+                </a>
+                <a
+                  href="https://npmjs.com/package/@atosjs/azura"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-purple-400 transition-colors"
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    stroke-width="0"
+                    viewBox="0 0 576 512"
+                    className="text-2xl cursor-pointer hover:text-red-500"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M288 288h-32v-64h32v64zm288-128v192H288v32H160v-32H0V160h576zm-416 32H32v128h64v-96h32v96h32V192zm160 0H192v160h64v-32h64V192zm224 0H352v128h64v-96h32v96h32v-96h32v96h32V192z"></path>
+                  </svg>
+                  <span className="sr-only">NPM</span>
                 </a>
               </nav>
             </div>
@@ -60,7 +82,8 @@ export default function RootLayout({
                     <span className="font-bold text-xl ml-2">Azura</span>
                   </Link>
                   <p className="text-gray-400 mb-4">
-                    Um microframework web minimalista, poderoso e moderno para APIs rápidas e modulares.
+                    Um microframework web minimalista, poderoso e moderno para APIs rápidas e
+                    modulares.
                   </p>
                   <div className="flex space-x-4">
                     <a
@@ -78,9 +101,17 @@ export default function RootLayout({
                       rel="noopener noreferrer"
                       className="text-gray-400 hover:text-purple-400 transition-colors"
                     >
-                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M0 0v24h24V0H0zm19.2 19.2H4.8V4.8h14.4v14.4z" />
-                        <path d="M15.6 4.8H4.8v14.4h10.8V4.8zm-6 9.6H7.2V7.2h2.4v7.2zm6-2.4h-2.4V7.2h2.4v4.8z" />
+                      <svg
+                        stroke="currentColor"
+                        fill="currentColor"
+                        stroke-width="0"
+                        viewBox="0 0 576 512"
+                        className="text-2xl cursor-pointer hover:text-red-500"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M288 288h-32v-64h32v64zm288-128v192H288v32H160v-32H0V160h576zm-416 32H32v128h64v-96h32v96h32V192zm160 0H192v160h64v-32h64V192zm224 0H352v128h64v-96h32v96h32v-96h32v96h32V192z"></path>
                       </svg>
                       <span className="sr-only">NPM</span>
                     </a>
@@ -90,25 +121,34 @@ export default function RootLayout({
                   <h3 className="font-bold text-white mb-4">Documentação</h3>
                   <ul className="space-y-2">
                     <li>
-                      <Link href="/docs/introduction" className="text-gray-400 hover:text-purple-400 transition-colors">
+                      <Link
+                        href="/docs/guides/introduction"
+                        className="text-gray-400 hover:text-purple-400 transition-colors"
+                      >
                         Introdução
                       </Link>
                     </li>
                     <li>
-                      <Link href="/docs/installation" className="text-gray-400 hover:text-purple-400 transition-colors">
+                      <Link
+                        href="/docs/guide/installation"
+                        className="text-gray-400 hover:text-purple-400 transition-colors"
+                      >
                         Instalação
                       </Link>
                     </li>
                     <li>
                       <Link
-                        href="/docs/getting-started"
+                        href="/docs/guide/getting-started"
                         className="text-gray-400 hover:text-purple-400 transition-colors"
                       >
                         Primeiros Passos
                       </Link>
                     </li>
                     <li>
-                      <Link href="/docs/guides" className="text-gray-400 hover:text-purple-400 transition-colors">
+                      <Link
+                        href="/docs/guides"
+                        className="text-gray-400 hover:text-purple-400 transition-colors"
+                      >
                         Guias
                       </Link>
                     </li>
@@ -122,7 +162,7 @@ export default function RootLayout({
                         href="/docs/api/azura-app"
                         className="text-gray-400 hover:text-purple-400 transition-colors"
                       >
-                        AzuraApp
+                        AzuraServer
                       </Link>
                     </li>
                     <li>
@@ -142,7 +182,10 @@ export default function RootLayout({
                       </Link>
                     </li>
                     <li>
-                      <Link href="/docs/api/plugins" className="text-gray-400 hover:text-purple-400 transition-colors">
+                      <Link
+                        href="/docs/api/plugins"
+                        className="text-gray-400 hover:text-purple-400 transition-colors"
+                      >
                         Plugins
                       </Link>
                     </li>
@@ -204,5 +247,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

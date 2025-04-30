@@ -1,26 +1,35 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Code, Download, ExternalLink, Github, Package, Server, Shield, Zap } from "lucide-react"
-import { HeroCode } from "@/components/hero-code"
-import { FeatureCard } from "@/components/feature-card"
-import { GradientLogo } from "@/components/gradient-logo"
-import { AnimatedGradient } from "@/components/animated-gradient"
-import { CodeDemo } from "@/components/code-demo"
-import { TestimonialCard } from "@/components/testimonial-card"
-import { GradientButton } from "@/components/gradient-button"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  ArrowRight,
+  Code,
+  Download,
+  ExternalLink,
+  Github,
+  Package,
+  Server,
+  Shield,
+  Zap,
+} from "lucide-react";
+import { HeroCode } from "@/components/hero-code";
+import { FeatureCard } from "@/components/feature-card";
+import { GradientLogo } from "@/components/gradient-logo";
+import { AnimatedGradient } from "@/components/animated-gradient";
+import { CodeDemo } from "@/components/code-demo";
+import { TestimonialCard } from "@/components/testimonial-card";
+import { GradientButton } from "@/components/gradient-button";
 
 export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen bg-black">
-      {/* Hero Section with Animated Gradient Background */}
       <section className="relative overflow-hidden py-20 md:py-32">
         <AnimatedGradient />
 
         <div className="container relative z-10 px-4 md:px-6">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
             <Badge className="mb-6 bg-purple-900/30 text-purple-300 hover:bg-purple-900/40 transition-colors">
-              v1.0.0 Lançado
+              v3.0.0 Lançado
             </Badge>
 
             <div className="mb-6">
@@ -36,8 +45,8 @@ export default function HomePage() {
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl">
-              Azura é um microframework web minimalista, poderoso e moderno, feito para APIs rápidas e modulares usando
-              TypeScript ou JavaScript.
+              Azura é um microframework web minimalista, poderoso e moderno, feito para APIs rápidas
+              e modulares usando TypeScript ou JavaScript.
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center mb-12">
@@ -53,7 +62,11 @@ export default function HomePage() {
                 size="lg"
                 className="border-purple-700/50 text-white hover:bg-purple-950/20 transition-all duration-300"
               >
-                <a href="https://github.com/0xviny/AzuraV2" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://github.com/0xviny/AzuraV2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Github className="mr-2 h-4 w-4" /> GitHub
                 </a>
               </Button>
@@ -66,10 +79,16 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center transition-transform hover:scale-105"
               >
-                <img src="https://img.shields.io/npm/v/@atosjs/azura.svg?style=for-the-badge" alt="npm version" />
+                <img
+                  src="https://img.shields.io/npm/v/@atosjs/azura.svg?style=for-the-badge"
+                  alt="npm version"
+                />
               </a>
               <a href="#" className="inline-flex items-center transition-transform hover:scale-105">
-                <img src="https://img.shields.io/badge/license-ISC-blue.svg?style=for-the-badge" alt="License" />
+                <img
+                  src="https://img.shields.io/badge/license-ISC-blue.svg?style=for-the-badge"
+                  alt="License"
+                />
               </a>
               <a
                 href="https://nodejs.org/"
@@ -87,7 +106,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Code Demo Section */}
       <section className="py-20 px-4 md:px-6 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-purple-950/20 to-transparent opacity-50"></div>
         <div className="container relative z-10 max-w-6xl mx-auto">
@@ -96,10 +114,13 @@ export default function HomePage() {
               <Badge className="mb-4 bg-purple-900/30 text-purple-300 hover:bg-purple-900/40 transition-colors">
                 Simples e Poderoso
               </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Crie APIs em segundos, não em horas</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                Crie APIs em segundos, não em horas
+              </h2>
               <p className="text-gray-300 mb-6">
-                Azura foi projetado para ser intuitivo e fácil de usar, permitindo que você crie APIs robustas com
-                poucas linhas de código. Sem configurações complexas, sem dependências pesadas.
+                Azura foi projetado para ser intuitivo e fácil de usar, permitindo que você crie
+                APIs robustas com poucas linhas de código. Sem configurações complexas, sem
+                dependências pesadas.
               </p>
               <ul className="space-y-3 text-gray-300">
                 {[
@@ -110,7 +131,11 @@ export default function HomePage() {
                 ].map((item, i) => (
                   <li key={i} className="flex items-center">
                     <div className="mr-3 h-5 w-5 text-purple-500">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
                         <path
                           fillRule="evenodd"
                           d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -131,17 +156,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="py-20 px-4 md:px-6">
         <div className="container max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <Badge className="mb-4 bg-purple-900/30 text-purple-300 hover:bg-purple-900/40 transition-colors">
               Recursos
             </Badge>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Tudo que você precisa para APIs modernas</h2>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+              Tudo que você precisa para APIs modernas
+            </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Azura combina simplicidade com poder, oferecendo tudo que você precisa para criar APIs robustas e
-              escaláveis.
+              Azura combina simplicidade com poder, oferecendo tudo que você precisa para criar APIs
+              robustas e escaláveis.
             </p>
           </div>
 
@@ -180,15 +206,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Code Examples Section */}
       <section className="py-20 px-4 md:px-6 bg-gradient-to-b from-black to-purple-950/20">
         <div className="container max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <Badge className="mb-4 bg-purple-900/30 text-purple-300 hover:bg-purple-900/40 transition-colors">
               Exemplos
             </Badge>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Código limpo e expressivo</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">Veja como é fácil criar APIs poderosas com Azura.</p>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+              Código limpo e expressivo
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Veja como é fácil criar APIs poderosas com Azura.
+            </p>
           </div>
 
           <div className="space-y-12">
@@ -196,42 +225,41 @@ export default function HomePage() {
               title="API Básica"
               description="Crie um servidor HTTP básico em segundos"
               language="javascript"
-              code={`const { AzuraApp } = require('@atosjs/azura');
+              code={`const { AzuraServer } = require('@atosjs/azura');
 
-const app = new AzuraApp();
+const app = new AzuraServer({ port: 3000 });
 
 app.get('/', (req, res) => {
   res.send('Hello World from Azura!');
 });
 
-app.listen(3000, () => {
-  console.log('Server running at http://localhost:3000');
-});`}
+app.listen();`}
             />
 
             <CodeDemo
               title="Controllers com Decorators"
               description="Use decorators para organizar suas rotas"
               language="typescript"
-              code={`import { Controller, Get, Post, Body } from '@atosjs/azura';
+              code={`import { Controller, Get, Post } from '@atosjs/azura';
+import { app } from '../app';
 
 @Controller('/users')
 export class UserController {
   @Get('/')
   async getAllUsers(req, res) {
-    const users = await db.users.findAll();
+    const users = await app.db?.find('users', {});
     res.json(users);
   }
 
   @Post('/')
   async createUser(req, res) {
-    const user = await db.users.create(req.body);
+    const user = await app.db?.insert('users', req.body);
     res.status(201).json(user);
   }
 
   @Get('/:id')
   async getUserById(req, res) {
-    const user = await db.users.findById(req.params.id);
+    const user = await app.db?.find('users', { id: req.params.id });
     if (!user) return res.status(404).json({ error: 'User not found' });
     res.json(user);
   }
@@ -242,11 +270,11 @@ export class UserController {
               title="Middlewares e Plugins"
               description="Estenda a funcionalidade com middlewares e plugins"
               language="typescript"
-              code={`import { AzuraApp } from '@atosjs/azura';
+              code={`import { AzuraServer } from '@atosjs/azura';
 import { AuthPlugin } from './plugins/AuthPlugin';
 import { LoggerMiddleware } from './middlewares/LoggerMiddleware';
 
-const app = new AzuraApp();
+const app = new AzuraServer();
 
 // Registrar plugin de autenticação
 app.registerPlugin(AuthPlugin, {
@@ -279,56 +307,22 @@ app.listen(3000);`}
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 px-4 md:px-6">
-        <div className="container max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-purple-900/30 text-purple-300 hover:bg-purple-900/40 transition-colors">
-              Depoimentos
-            </Badge>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">O que os desenvolvedores estão dizendo</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Junte-se a centenas de desenvolvedores que já estão usando Azura para criar APIs modernas.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <TestimonialCard
-              quote="Azura mudou a forma como eu desenvolvo APIs. É rápido, intuitivo e extremamente flexível."
-              author="João Silva"
-              role="Senior Backend Developer"
-              avatar="/placeholder.svg?height=80&width=80"
-            />
-            <TestimonialCard
-              quote="A combinação de simplicidade com recursos avançados é perfeita. Consegui reduzir o tempo de desenvolvimento em 50%."
-              author="Maria Oliveira"
-              role="Tech Lead"
-              avatar="/placeholder.svg?height=80&width=80"
-            />
-            <TestimonialCard
-              quote="A documentação é excelente e a comunidade está crescendo rapidamente. Recomendo para qualquer projeto."
-              author="Carlos Santos"
-              role="Fullstack Developer"
-              avatar="/placeholder.svg?height=80&width=80"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Getting Started Section */}
       <section className="py-20 px-4 md:px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-purple-950/30 to-transparent"></div>
         <div className="container relative z-10 max-w-6xl mx-auto">
           <div className="bg-gradient-to-r from-purple-950/50 to-purple-900/50 p-8 md:p-12 rounded-2xl border border-purple-700/30 backdrop-blur-sm">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Comece a usar Azura hoje</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                  Comece a usar Azura hoje
+                </h2>
                 <p className="text-gray-300 mb-8">
-                  Instale o pacote, crie seu primeiro projeto e veja como é fácil desenvolver APIs modernas com Azura.
+                  Instale o pacote, crie seu primeiro projeto e veja como é fácil desenvolver APIs
+                  modernas com Azura.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <GradientButton asChild>
-                    <Link href="/docs/getting-started">
+                    <Link href="/docs/guides/getting-started">
                       Guia de Início <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </GradientButton>
@@ -338,7 +332,11 @@ app.listen(3000);`}
                     size="lg"
                     className="border-purple-700/50 text-white hover:bg-purple-950/20 transition-all duration-300"
                   >
-                    <a href="https://www.npmjs.com/package/@atosjs/azura" target="_blank" rel="noopener noreferrer">
+                    <a
+                      href="https://www.npmjs.com/package/@atosjs/azura"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Package className="mr-2 h-4 w-4" /> NPM Package
                     </a>
                   </Button>
@@ -359,7 +357,6 @@ app.listen(3000);`}
         </div>
       </section>
 
-      {/* Open Source Section */}
       <section className="py-20 px-4 md:px-6">
         <div className="container max-w-6xl mx-auto text-center">
           <Badge className="mb-4 bg-purple-900/30 text-purple-300 hover:bg-purple-900/40 transition-colors">
@@ -369,8 +366,8 @@ app.listen(3000);`}
             Construído pela comunidade, para a comunidade
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-10">
-            Azura é um projeto open source, mantido por desenvolvedores apaixonados. Contribua e faça parte desta
-            comunidade.
+            Azura é um projeto open source, mantido por desenvolvedores apaixonados. Contribua e
+            faça parte desta comunidade.
           </p>
           <Button
             asChild
@@ -392,5 +389,5 @@ app.listen(3000);`}
         </div>
       </section>
     </div>
-  )
+  );
 }

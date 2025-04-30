@@ -19,13 +19,19 @@ export interface ServerOptions {
 type Handler = (ctx: any) => Promise<void> | void;
 export type RequestHandler = (
   req: IncomingMessage & any,
-  res: ServerResponse & any
-) => Promise<void>;
+  res: ServerResponse & any,
+  next: (err?: any) => void
+) => Promise<void> | void;
 
 function adaptRequestHandler(handler: RequestHandler): Handler {
   return async (ctx: any) => {
     const { request, response } = ctx;
-    await handler(request, response);
+    await new Promise<void>((resolve, reject) => {
+      handler(request, response, (err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
   };
 }
 
@@ -64,32 +70,37 @@ export class AzuraServer {
     (this as any)[name] = value;
   }
 
-  registerPlugin(plugin: Plugin, opts?: any) {
-    this.plugins.register(plugin, opts);
+  public registerPlugin<API>(plugin: Plugin<API>, opts?: any): API | undefined {
+    return this.plugins.register(plugin, opts);
   }
 
-  addRoute(method: string, path: string, handler: RequestHandler) {
-    this.router.add(method, path, adaptRequestHandler(handler));
+  public addRoute(method: string, path: string, ...handlers: RequestHandler[]) {
+    const adapted = handlers.map((h) => adaptRequestHandler(h));
+    this.router.add(method, path, ...adapted);
   }
 
   onHook(type: any, fn: Function) {
     this.life.add(type, fn);
   }
 
-  public get(path: string, handler: RequestHandler): void {
-    this.addRoute("GET", path, handler);
+  public get(path: string, ...handlers: RequestHandler[]) {
+    const adapted = handlers.map((h) => adaptRequestHandler(h));
+    this.router.add("GET", path, ...adapted);
   }
 
-  public post(path: string, handler: RequestHandler): void {
-    this.addRoute("POST", path, handler);
+  public post(path: string, ...handlers: RequestHandler[]) {
+    const adapted = handlers.map((h) => adaptRequestHandler(h));
+    this.router.add("POST", path, ...adapted);
   }
 
-  public put(path: string, handler: RequestHandler): void {
-    this.addRoute("PUT", path, handler);
+  public put(path: string, ...handlers: RequestHandler[]) {
+    const adapted = handlers.map((h) => adaptRequestHandler(h));
+    this.router.add("PUT", path, ...adapted);
   }
 
-  public delete(path: string, handler: RequestHandler): void {
-    this.addRoute("DELETE", path, handler);
+  public delete(path: string, ...handlers: RequestHandler[]) {
+    const adapted = handlers.map((h) => adaptRequestHandler(h));
+    this.router.add("DELETE", path, ...adapted);
   }
 
   listen(port = this.opts.port || 3000) {
@@ -159,19 +170,31 @@ export class AzuraServer {
     };
 
     try {
-      const { handler, params } = this.router.find(req.method || "GET", path || "/");
+      const { handlers: routeHandlers, params } = this.router.find(
+        req.method || "GET",
+        path || "/"
+      );
       req.params = params;
 
       const executeMiddlewares = (index: number) => {
-        if (index >= this.middlewares.length) return handler(req, res);
-        const middleware = this.middlewares[index];
-        middleware(req, res, (err?: any) => {
+        if (index >= this.middlewares.length) return;
+        const mw = this.middlewares[index];
+        mw(req, res, (err?: any) => {
           if (err) return errorMiddleware(err, req, res);
           executeMiddlewares(index + 1);
         });
       };
-
       await executeMiddlewares(0);
+
+      const executeRoute = (idx: number) => {
+        if (idx >= routeHandlers.length) return;
+        const fn = routeHandlers[idx];
+        fn(req, res, (err?: any) => {
+          if (err) return errorMiddleware(err, req, res);
+          executeRoute(idx + 1);
+        });
+      };
+      executeRoute(0);
     } catch (err: any) {
       if (err instanceof HTTPError) {
         res.status(err.status).json(err.payload);

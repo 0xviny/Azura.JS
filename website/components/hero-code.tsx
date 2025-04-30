@@ -7,9 +7,9 @@ import { cn } from "@/lib/utils"
 const codeExamples = [
   {
     language: "javascript",
-    code: `const { AzuraApp } = require('@atosjs/azura');
+    code: `const { AzuraServer } = require('@atosjs/azura');
 
-const app = new AzuraApp();
+const app = new AzuraServer();
 
 app.get('/', (req, res) => {
   res.send('Hello World from Azura!');
@@ -42,10 +42,10 @@ export class UserController {
   },
   {
     language: "typescript",
-    code: `import { AzuraApp } from '@atosjs/azura';
+    code: `import { AzuraServer } from '@atosjs/azura';
 import { AuthPlugin } from './plugins/AuthPlugin';
 
-const app = new AzuraApp();
+const app = new AzuraServer();
 
 // Registrar plugin de autenticação
 app.registerPlugin(AuthPlugin, {

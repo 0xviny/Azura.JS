@@ -1,24 +1,18 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, ChevronRight, Github } from "lucide-react"
-import { CodeDemo } from "@/components/code-demo"
-import { DocSidebar } from "@/components/doc-sidebar"
-import { TableOfContents } from "@/components/table-of-contents"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, ChevronRight, Github } from "lucide-react";
+import { CodeDemo } from "@/components/code-demo";
+import { DocSidebar } from "@/components/doc-sidebar";
+import { TableOfContents } from "@/components/table-of-contents";
 
-export default function DocPage({ params }: { params: { slug: string[] } }) {
-  // Esta é uma página de exemplo. Em uma implementação real, você buscaria o conteúdo
-  // com base no slug dos parâmetros.
-  const slug = params.slug.join("/")
-
+export default function DocPage() {
   return (
     <div className="flex flex-col min-h-screen bg-black">
       <div className="container max-w-7xl mx-auto px-4 py-16">
         <div className="flex flex-col lg:flex-row gap-10">
-          {/* Sidebar */}
           <DocSidebar className="w-full lg:w-64 shrink-0" />
 
-          {/* Main Content */}
           <main className="flex-1 min-w-0">
             <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-10">
               <div>
@@ -41,20 +35,20 @@ export default function DocPage({ params }: { params: { slug: string[] } }) {
                     API
                   </Link>
                   <ChevronRight className="h-4 w-4" />
-                  <span className="text-gray-300">AzuraApp</span>
+                  <span className="text-gray-300">AzuraServer</span>
                 </div>
 
                 <Badge className="mb-4 bg-purple-900/30 text-purple-300 hover:bg-purple-900/40 transition-colors">
                   API Reference
                 </Badge>
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">AzuraApp</h1>
+                <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">AzuraServer</h1>
                 <p className="text-xl text-gray-300 max-w-3xl">
                   A classe principal do Azura que cria e configura o servidor HTTP.
                 </p>
               </div>
 
               <div className="flex gap-3">
-                <Button
+                {/* <Button
                   asChild
                   variant="outline"
                   size="sm"
@@ -67,14 +61,18 @@ export default function DocPage({ params }: { params: { slug: string[] } }) {
                   >
                     Editar esta página
                   </a>
-                </Button>
+                </Button> */}
                 <Button
                   asChild
                   variant="outline"
                   size="sm"
                   className="border-purple-700/50 text-white hover:bg-purple-950/20 transition-all duration-300"
                 >
-                  <a href="https://github.com/0xviny/AzuraV2" target="_blank" rel="noopener noreferrer">
+                  <a
+                    href="https://github.com/0xviny/AzuraV2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <Github className="mr-2 h-4 w-4" /> Ver no GitHub
                   </a>
                 </Button>
@@ -85,60 +83,59 @@ export default function DocPage({ params }: { params: { slug: string[] } }) {
               <div className="prose prose-invert max-w-none prose-headings:scroll-mt-20 prose-pre:bg-gray-950 prose-pre:border prose-pre:border-purple-900/20">
                 <h2 id="introduction">Introdução</h2>
                 <p>
-                  <code>AzuraApp</code> é a classe principal do Azura que cria e configura o servidor HTTP. Ela fornece
-                  métodos para definir rotas, middlewares, plugins e iniciar o servidor.
+                  <code>AzuraServer</code> é a classe principal do Azura que cria e configura o
+                  servidor HTTP. Ela fornece métodos para definir rotas, middlewares, plugins e
+                  iniciar o servidor.
                 </p>
 
                 <h2 id="installation">Instalação</h2>
                 <p>
-                  Antes de usar a classe <code>AzuraApp</code>, você precisa instalar o pacote Azura:
+                  Antes de usar a classe <code>AzuraServer</code>, você precisa instalar o pacote
+                  Azura:
                 </p>
 
                 <div className="not-prose">
-                  <CodeDemo language="bash" code="npm install @atosjs/azura" showLineNumbers={false} />
+                  <CodeDemo
+                    language="bash"
+                    code="npm install @atosjs/azura"
+                    showLineNumbers={false}
+                  />
                 </div>
 
                 <h2 id="basic-usage">Uso Básico</h2>
                 <p>
-                  Aqui está um exemplo básico de como usar a classe <code>AzuraApp</code>:
+                  Aqui está um exemplo básico de como usar a classe <code>AzuraServer</code>:
                 </p>
 
                 <div className="not-prose">
                   <CodeDemo
                     language="javascript"
-                    code={`const { AzuraApp } = require('@atosjs/azura');
+                    code={`const { AzuraServer } = require('@atosjs/azura');
 
-const app = new AzuraApp();
+const app = new AzuraServer({ port: 3000 });
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.listen(3000, () => {
-  console.log('Server running at http://localhost:3000');
-});`}
+app.listen();`}
                   />
                 </div>
 
                 <h2 id="constructor">Construtor</h2>
                 <p>
-                  O construtor da classe <code>AzuraApp</code> aceita um objeto de opções para configurar o servidor.
+                  O construtor da classe <code>AzuraServer</code> aceita um objeto de opções para
+                  configurar o servidor.
                 </p>
 
                 <div className="not-prose">
                   <CodeDemo
                     language="typescript"
-                    code={`const app = new AzuraApp({
+                    code={`const app = new AzuraServer({
   port: 3000,        // Porta padrão (opcional)
   https: false,      // Habilitar HTTPS (opcional)
   http2: false,      // Habilitar HTTP/2 (opcional)
   cluster: false,    // Usar cluster para múltiplos CPUs (opcional)
-  logger: true,      // Habilitar logging (opcional)
-  cors: {            // Configurações de CORS (opcional)
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  }
 });`}
                   />
                 </div>
@@ -267,33 +264,39 @@ app.listen(() => {
                   <CodeDemo
                     language="javascript"
                     code={`// Definindo um plugin
+interface AuthAPI {
+requireAuth(): (req: Request, res: Response, next: Function) => void;
+}
+
 const authPlugin = {
-  name: 'auth',
-  register: (app, options) => {
-    app.decorate('auth', {
+  name: "auth",
+  register(app: AzuraServer): AuthAPI {
+    const api: AuthAPI = {
       requireAuth: () => (req, res, next) => {
         if (!req.headers.authorization) {
-          return res.status(401).json({ error: 'Unauthorized' });
+          return res.status(401).json({ error: "Unauthorized" });
         }
         next();
-      }
-    });
-  }
+      },
+    };
+    return api;
+  },
 };
 
 // Registrando o plugin
-app.registerPlugin(authPlugin, { /* opções */ });
+const auth = app.registerPlugin<AuthAPI>(authPlugin)!;
 
 // Usando o plugin
-app.get('/protected', app.auth.requireAuth(), (req, res) => {
-  res.json({ message: 'Protected route' });
+app.get("/protected", auth.requireAuth(), async (req: Request, res: Response) => {
+  return res.json({ message: "Protected route" });
 });`}
                   />
                 </div>
 
                 <h2 id="events">Eventos</h2>
                 <p>
-                  A classe <code>AzuraApp</code> emite eventos durante o ciclo de vida da aplicação.
+                  A classe <code>AzuraServer</code> emite eventos durante o ciclo de vida da
+                  aplicação.
                 </p>
 
                 <div className="not-prose">
@@ -327,9 +330,9 @@ app.onHook('afterStop', () => {
                 <div className="not-prose">
                   <CodeDemo
                     language="javascript"
-                    code={`const { AzuraApp } = require('@atosjs/azura');
+                    code={`const { AzuraServer } = require('@atosjs/azura');
 
-const app = new AzuraApp();
+const app = new AzuraServer();
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -349,9 +352,9 @@ app.listen(3000, () => {
                 <div className="not-prose">
                   <CodeDemo
                     language="javascript"
-                    code={`const { AzuraApp } = require('@atosjs/azura');
+                    code={`const { AzuraServer } = require('@atosjs/azura');
 
-const app = new AzuraApp();
+const app = new AzuraServer();
 
 // Middleware de logging
 app.use((req, res, next) => {
@@ -385,7 +388,7 @@ app.listen(3000);`}
                 <div className="not-prose">
                   <CodeDemo
                     language="typescript"
-                    code={`import { AzuraApp, Controller, Get, Post, Put, Delete } from '@atosjs/azura';
+                    code={`import { AzuraServer, Controller, Get, Post, Put, Delete } from '@atosjs/azura';
 
 @Controller('/api/users')
 class UserController {
@@ -432,7 +435,7 @@ class UserController {
   }
 }
 
-const app = new AzuraApp();
+const app = new AzuraServer();
 app.load([UserController]);
 app.listen(3000);`}
                   />
@@ -468,10 +471,16 @@ app.listen(3000);`}
             </div>
 
             <div className="mt-16 border-t border-gray-800 pt-8 flex items-center justify-between">
-              <Link href="/docs/getting-started" className="text-purple-400 hover:text-purple-300 transition-colors">
+              <Link
+                href="/docs/guides/getting-started"
+                className="text-purple-400 hover:text-purple-300 transition-colors"
+              >
                 ← Primeiros Passos
               </Link>
-              <Link href="/docs/api/controllers" className="text-purple-400 hover:text-purple-300 transition-colors">
+              <Link
+                href="/docs/api/controllers"
+                className="text-purple-400 hover:text-purple-300 transition-colors"
+              >
                 Controllers →
               </Link>
             </div>
@@ -479,5 +488,5 @@ app.listen(3000);`}
         </div>
       </div>
     </div>
-  )
+  );
 }
