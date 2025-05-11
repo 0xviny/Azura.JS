@@ -33,7 +33,7 @@ export default function RootLayout({
                 <GradientLogo size={24} />
                 <span className="font-bold text-xl ml-2">Azura</span>
               </Link>
-              <nav className="hidden md:flex items-center gap-8">
+              <nav className="flex items-center gap-8">
                 <Link
                   href="/docs"
                   className="text-gray-300 hover:text-purple-400 transition-colors"
