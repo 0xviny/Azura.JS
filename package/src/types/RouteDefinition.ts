@@ -1,9 +1,23 @@
-import { Method } from "../decorators/Route";
+export type ParamSource =
+  | "param"
+  | "query"
+  | "body"
+  | "headers"
+  | "req"
+  | "res"
+  | "next"
+  | "ip"
+  | "useragent";
+
+export interface ParamDefinition {
+  index: number;            // índice do parâmetro na assinatura
+  type: ParamSource;        // origem do valor
+  name?: string;            // chave (p.ex. nome do param/query/body/header)
+}
 
 export interface RouteDefinition {
-  method: Method;
-  path: string;
-  property: string;
-  schema?: any;
-  middlewares?: string[];
+  method: string;           // "GET", "POST"…
+  path: string;             // "/users/:id"
+  propertyKey: string;      // nome do método no controller
+  params: ParamDefinition[];// lista de ParamDefinitions
 }

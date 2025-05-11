@@ -1,64 +1,121 @@
-// src/decorators/Decorators.ts
 import "reflect-metadata";
 import { AzuraServer } from "../core/Server";
-import { RouteDefinition } from "../types/RouteDefinition";
-import { HookType } from "../core/Lifecycle";
+import { RouteDefinition, ParamDefinition, ParamSource } from "../types/RouteDefinition";
+import { RequestServer } from "../core/Request";
+import { ResponseServer } from "../core/Response";
 
-type HookDef = { type: HookType; property: string };
-type SocketDef = { path: string; property: string };
+const PREFIX_KEY = Symbol("prefix");
+const ROUTES_KEY = Symbol("routes");
+const PARAMS_KEY = Symbol("params");
 
-export function applyDecorators(app: AzuraServer, controllers: any[]): void {
+function Controller(prefix = ""): ClassDecorator {
+  return (target) => {
+    Reflect.defineMetadata(PREFIX_KEY, prefix, target);
+  };
+}
+
+function createMethodDecorator(method: string) {
+  return (path = ""): MethodDecorator => {
+    return (target, propertyKey) => {
+      const routes: RouteDefinition[] = Reflect.getMetadata(ROUTES_KEY, target) || [];
+      routes.push({
+        method,
+        path,
+        propertyKey: propertyKey as string,
+        params: Reflect.getMetadata(PARAMS_KEY, target, propertyKey as string) || [],
+      });
+      Reflect.defineMetadata(ROUTES_KEY, routes, target);
+    };
+  };
+}
+
+function createParamDecorator(type: ParamSource) {
+  return (name?: string): ParameterDecorator => {
+    return (target, propertyKey, parameterIndex) => {
+      const existing: ParamDefinition[] =
+        Reflect.getMetadata(PARAMS_KEY, target, propertyKey as string) || [];
+      existing.push({ index: parameterIndex, type, name });
+      Reflect.defineMetadata(PARAMS_KEY, existing, target, propertyKey as string);
+    };
+  };
+}
+
+// Métodos HTTP
+export const Get = createMethodDecorator("GET");
+export const Post = createMethodDecorator("POST");
+export const Put = createMethodDecorator("PUT");
+export const Delete = createMethodDecorator("DELETE");
+export const Patch = createMethodDecorator("PATCH");
+
+// Parâmetros
+export const Req = createParamDecorator("req");
+export const Res = createParamDecorator("res");
+export const Next = createParamDecorator("next");
+export const Param = createParamDecorator("param");
+export const Query = createParamDecorator("query");
+export const Body = createParamDecorator("body");
+export const Headers = createParamDecorator("headers");
+export const Ip = createParamDecorator("ip");
+export const UserAgent = createParamDecorator("useragent");
+
+/**
+ * Aplica os decorators aos controllers:
+ * - lê prefix, rotas e params
+ * - cria um RequestHandler que extrai os args e invoca o método
+ */
+export function applyDecorators(app: AzuraServer, controllers: any[]) {
   controllers.forEach((ControllerClass) => {
-    const prefix: string = Reflect.getMetadata("prefix", ControllerClass) || "";
+    const prefix = Reflect.getMetadata(PREFIX_KEY, ControllerClass) || "";
     const instance = new ControllerClass();
 
-    // Rotas (GET, POST, etc)
     const routes: RouteDefinition[] =
-      Reflect.getMetadata("routes", ControllerClass.prototype) || [];
+      Reflect.getMetadata(ROUTES_KEY, ControllerClass.prototype) || [];
+
     routes.forEach((r) => {
-      const fullPath = prefix + r.path;
-      app.addRoute(r.method, fullPath, async (ctx: any) => {
-        // injete params de URL aqui se precisar
-        await (instance as any)[r.property](ctx);
-      });
-    });
-
-    // Hooks (onRequest, preHandler, ...)
-    const hooks: HookDef[] = Reflect.getMetadata("hooks", ControllerClass.prototype) || [];
-    hooks.forEach((h) => {
-      app.onHook(h.type, (ctx: any, next: Function) => (instance as any)[h.property](ctx, next));
-    });
-
-    // Middlewares específicos de Controller (decorator @Middleware)
-    const middlewares: string[] =
-      Reflect.getMetadata("middlewares", ControllerClass.prototype) || [];
-    middlewares.forEach((prop) => {
-      // assumindo que middleware registra via onRequest
-      app.onHook("onRequest", (ctx: any, next: Function) => (instance as any)[prop](ctx, next));
-    });
-
-    // WebSockets (@Socket)
-    const sockets: SocketDef[] = Reflect.getMetadata("sockets", ControllerClass.prototype) || [];
-    sockets.forEach((s) => {
-      const path = prefix + s.path;
-      // Supondo que você já tenha criado o WSS via createWSS
-      app.onHook("onRequest", (ctx: any, next: Function) => {
-        // passe para um canal WS, aqui apenas exemplo:
-        if (ctx.request.url === path) {
-          (instance as any)[s.property](ctx);
+      // gera o handler que o AzuraServer espera: (req,res,next)
+      const handler = async (
+        req: RequestServer | any,
+        res: ResponseServer | any,
+        next: (err?: any) => void
+      ) => {
+        try {
+          // ordena params por índice e extrai valores
+          const args = r.params
+            .sort((a, b) => a.index - b.index)
+            .map((p) => {
+              switch (p.type) {
+                case "req":
+                  return req;
+                case "res":
+                  return res;
+                case "next":
+                  return next;
+                case "param":
+                  return p.name ? req.params[p.name] : req.params;
+                case "query":
+                  return p.name ? req.query[p.name] : req.query;
+                case "body":
+                  return p.name ? req.body[p.name] : req.body;
+                case "headers":
+                  return p.name ? req.headers[p.name.toLowerCase()] : req.headers;
+                case "ip":
+                  return req.ip;
+                case "useragent":
+                  return req.headers["user-agent"];
+                default:
+                  return undefined;
+              }
+            });
+          // chama o método do controller
+          const result = (instance as any)[r.propertyKey](...args);
+          // se retornar Promise e não chamou res.* por conta própria, aguarda
+          if (result instanceof Promise) await result;
+        } catch (err) {
+          next(err);
         }
-        return next();
-      });
-    });
+      };
 
-    // Decorators adicionais (Auth, Schema, etc) podem ser processados aqui
-    // Exemplo para @Auth:
-    const auths: { property: string; role?: string }[] =
-      Reflect.getMetadata("auth", ControllerClass.prototype) || [];
-    auths.forEach((a) => {
-      app.onHook("preValidation", (ctx: any, next: Function) =>
-        (instance as any)[a.property](ctx, next)
-      );
+      app.addRoute(r.method, prefix + r.path, handler);
     });
   });
 }

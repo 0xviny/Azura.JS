@@ -1,60 +1,50 @@
-import { AzuraServer, dbPlugin } from "../../../src";
-import { Request } from "../../../src/core/Request";
-import { Response } from "../../../src/core/Response";
-import { HelloController } from "./controllers/HelloController";
+// src/examples/simple-app/src/index.ts
+import { AzuraServer, Plugin } from "../../../src";
+import { RequestServer } from "../../../src/core/Request";
+import { ResponseServer } from "../../../src/core/Response";
+import { RequestHandler } from "../../../src/core/Server";
 
-// 1) Interface que define a API do seu plugin de auth
+// 1) plugin de auth corrigido para não retornar o res
 interface AuthAPI {
-  requireAuth(): (req: Request, res: Response, next: Function) => void;
+  requireAuth(): RequestHandler;
 }
 
-// 2) Definição do plugin, retornando um AuthAPI
-const authPlugin = {
+const authPlugin: Plugin<AuthAPI> = {
   name: "auth",
-  register(app: AzuraServer): AuthAPI {
-    const api: AuthAPI = {
-      requireAuth: () => (req, res, next) => {
-        if (!req.headers.authorization) {
-          return res.status(401).json({ error: "Unauthorized" });
-        }
-        next();
+  register(app) {
+    return {
+      requireAuth: () => {
+        // RequestHandler: (req,res,next) => void | Promise<void>
+        return (req: RequestServer, res: ResponseServer, next) => {
+          const token = req.headers["authorization"];
+          if (!token) {
+            // apenas envie a resposta e encerre aqui
+            res.status(401).json({ error: "Unauthorized" });
+            return; // <-- não devolve ResponseServer, e não chama next()
+          }
+          next(); // prossegue normalmente
+        };
       },
     };
-    return api;
   },
 };
 
 const app = new AzuraServer({ port: 3000, cluster: false });
+const auth = app.registerPlugin(authPlugin)!;
 
-// 3) Registrar plugin de banco de dados
-app.registerPlugin(dbPlugin, {
-  type: "json",
-  file: "./db.json",
-});
-
-// já expõe app.db
-app.db!.connect();
-
-// 4) Registrar plugin de auth e capturar a API tipada
-const auth = app.registerPlugin<AuthAPI>(authPlugin)!;
-
-// 5) Rota sem auth
-app.get("/users", async (req: Request, res: Response) => {
+// rota pública
+app.get("/users", async (req: RequestServer, res: ResponseServer) => {
   const users = await app.db!.find("users", {});
-  return res.json(users);
+  res.json(users);
 });
 
-// 6) Rota protegida: passa o middleware do auth antes do handler
-app.get("/protected", auth.requireAuth(), async (req: Request, res: Response) => {
-  return res.json({ message: "Protected route" });
-});
+// rota protegida
+app.get(
+  "/protected",
+  auth.requireAuth(), // middleware que não retorna nada
+  async (req: RequestServer, res: ResponseServer) => {
+    res.json({ message: "Você está autenticado!" });
+  }
+);
 
-// 7) Carregar controllers via decorators (se tiver)
-app.load([HelloController]);
-
-// 8) Iniciar
 app.listen();
-
-// Exportar app para utilizar a class em outros arquivos
-export { app };
-// module.exports = app;
