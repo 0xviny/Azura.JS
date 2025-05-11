@@ -1,8 +1,8 @@
-// src/core/Server.ts
 import http from "http";
 import cluster from "cluster";
 import os from "os";
 import { parse as parseQS } from "querystring";
+import { serialize as serializeCookie } from "cookie";
 import { Router } from "./Router";
 import { Lifecycle } from "./Lifecycle";
 import { PluginLoader, Plugin } from "./PluginLoader";
@@ -67,11 +67,11 @@ export class AzuraServer {
     applyDecorators(this, controllers);
   }
 
-  onHook(type: any, fn: Function) {
+  public onHook(type: any, fn: Function) {
     this.life.add(type, fn);
   }
 
-  decorate(name: string, value: any): void {
+  public decorate(name: string, value: any): void {
     (this as any)[name] = value;
   }
 
@@ -110,49 +110,93 @@ export class AzuraServer {
     const req = rawReq as RequestServer;
     const res = rawRes as ResponseServer;
 
-    // ─── Helpers estilo Express ───────────────────────────────────────────
-    res.set = (k, v) => {
-      res.setHeader(k, v);
+    // ─── Enrich req ───────────────────────────────────────────────────────
+    req.originalUrl = req.url || "";
+    req.protocol = this.opts.https ? "https" : "http";
+    req.secure = req.protocol === "https";
+    req.hostname = String(req.headers["host"] || "").split(":")[0];
+    req.subdomains = req.hostname.split(".").slice(0, -2);
+    const ipsRaw = req.headers["x-forwarded-for"];
+    req.ips = typeof ipsRaw === "string" ? ipsRaw.split(/\s*,\s*/) : [];
+    req.get = req.header = (name: string) => {
+      const v = req.headers[name.toLowerCase()];
+      if (Array.isArray(v)) return v[0];
+      return typeof v === "string" ? v : undefined;
+    };
+
+    // ─── Enrich res ───────────────────────────────────────────────────────
+    res.status = (code: number) => {
+      res.statusCode = code;
       return res;
     };
-    res.get = (k) => {
-      const val = res.getHeader(k);
-      if (Array.isArray(val)) return val[0];
-      return typeof val === "number" ? val : val?.toString();
-    };
-    res.status = (c) => {
-      res.statusCode = c;
+    res.set = res.header = (field: string, value: string | number | string[]) => {
+      res.setHeader(field, value);
       return res;
     };
-    res.send = (b) => {
+    res.get = (field: string) => {
+      const v = res.getHeader(field);
+      if (Array.isArray(v)) return v[0];
+      return typeof v === "number" ? String(v) : (v as string | undefined);
+    };
+    res.type = res.contentType = (t: string) => {
+      res.setHeader("Content-Type", t);
+      return res;
+    };
+    res.location = (u: string) => {
+      res.setHeader("Location", u);
+      return res;
+    };
+    res.redirect = ((a: number | string, b?: string) => {
+      if (typeof a === "number") {
+        res.statusCode = a;
+        res.setHeader("Location", b!);
+      } else {
+        res.statusCode = 302;
+        res.setHeader("Location", a);
+      }
+      res.end();
+      return res;
+    }) as ResponseServer["redirect"];
+    res.cookie = (name: string, val: string, opts = {}) => {
+      const s = serializeCookie(name, val, opts);
+      const prev = res.getHeader("Set-Cookie");
+      if (prev) {
+        const list = Array.isArray(prev) ? prev.concat(s) : [prev as string, s];
+        res.setHeader("Set-Cookie", list);
+      } else {
+        res.setHeader("Set-Cookie", s);
+      }
+      return res;
+    };
+    res.clearCookie = (name: string, opts = {}) => {
+      return res.cookie(name, "", { ...opts, expires: new Date(1), maxAge: 0 });
+    };
+    res.send = (b: any) => {
       if (typeof b === "object") {
         res.setHeader("Content-Type", "application/json");
         res.end(JSON.stringify(b));
       } else {
-        res.setHeader("Content-Type", "text/html");
         res.end(String(b));
       }
       return res;
     };
-    res.json = (b) => {
+    res.json = (b: any) => {
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify(b));
       return res;
     };
 
-    // ─── Parse URL, query, cookies, body ─────────────────────────────────
+    // ─── Parse URL, query, cookies, body ──────────────────────────────────
     const [urlPath, qs] = (req.url || "").split("?");
     req.path = urlPath || "/";
-    // query → Record<string,string>
     const rawQuery = parseQS(qs || "");
     const safeQuery: Record<string, string> = {};
-    for (const key in rawQuery) {
-      const v = rawQuery[key];
-      safeQuery[key] = Array.isArray(v) ? v[0] : v || "";
+    for (const k in rawQuery) {
+      const v = rawQuery[k];
+      safeQuery[k] = Array.isArray(v) ? v[0] : v || "";
     }
     req.query = safeQuery;
 
-    // cookies
     const cookieHeader = (req.headers["cookie"] as string) || "";
     req.cookies = cookieHeader.split(";").reduce<Record<string, string>>((acc, pair) => {
       const [k, ...vals] = pair.trim().split("=");
@@ -162,17 +206,14 @@ export class AzuraServer {
 
     req.params = {};
 
-    // ip seguro
     const ipRaw = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "";
     const ipStr = Array.isArray(ipRaw) ? ipRaw[0] : ipRaw;
     req.ip = ipStr.split(",")[0].trim();
 
-    // body
     req.body = {};
     if (["POST", "PUT", "PATCH"].includes(req.method || "")) {
       await new Promise<void>((resolve) => {
         let buf = "";
-        // — dois argumentos em cada on()
         req.on("data", (chunk: Buffer | string) => {
           buf += chunk;
         });
@@ -195,15 +236,14 @@ export class AzuraServer {
           }
           resolve();
         });
-        // garante listener válido para “error”
         req.on("error", (err: Error) => {
-          logger("error", "Request body parse error: " + err.message);
+          logger("error", "Body parse error: " + err.message);
           resolve();
         });
       });
     }
 
-    // ─── Encontrar rota e executar middlewares ───────────────────────────
+    // ─── Routing + middleware chain ───────────────────────────────────────
     const errorHandler = (err: any) => {
       logger("error", err.message || err);
       res

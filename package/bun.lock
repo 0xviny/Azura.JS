@@ -3,6 +3,9 @@
   "workspaces": {
     "": {
       "name": "azura",
+      "dependencies": {
+        "cookie": "^1.0.2",
+      },
       "devDependencies": {
         "@eslint/js": "^9.25.1",
         "@types/aws-lambda": "^8.10.149",
@@ -532,6 +535,8 @@
     "convert-hrtime": ["convert-hrtime@3.0.0", "", {}, "sha512-7V+KqSvMiHp8yWDuwfww06XleMWVVB9b9tURBx+G7UTADuo5hYPuowKloz4OzOqbPezxgo+fdQ1522WzPG4OeA=="],
 
     "convert-source-map": ["convert-source-map@2.0.0", "", {}, "sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg=="],
+
+    "cookie": ["cookie@1.0.2", "", {}, "sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA=="],
 
     "cp-file": ["cp-file@10.0.0", "", { "dependencies": { "graceful-fs": "^4.2.10", "nested-error-stacks": "^2.1.1", "p-event": "^5.0.1" } }, "sha512-vy2Vi1r2epK5WqxOLnskeKeZkdZvTKfFZQCplE3XWsP+SUJyd5XAUFC9lFgTjjXJF2GMne/UML14iEmkAaDfFg=="],
 
