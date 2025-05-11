@@ -13,7 +13,7 @@ const httpLatency = new client.Histogram({
 });
 
 export function metrics() {
-  return async (ctx: any, next: Function) => {
+  return async (next: Function) => {
     const end = httpLatency.startTimer();
     httpReqs.inc();
     await next();
@@ -22,5 +22,5 @@ export function metrics() {
 }
 
 export function metricsEndpoint() {
-  return (_: any, res: any) => register.metrics();
+  return () => register.metrics();
 }

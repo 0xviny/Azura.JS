@@ -8,7 +8,7 @@ const mime: Record<string, string> = {
 };
 
 export function serveStatic(root: string) {
-  return (ctx: any, next: Function) => {
+  return (ctx: any) => {
     const full = `${root}${ctx.request.url}`;
     const type = mime[extname(full)] || "application/octet-stream";
     ctx.response.writeHead(200, { "Content-Type": type });

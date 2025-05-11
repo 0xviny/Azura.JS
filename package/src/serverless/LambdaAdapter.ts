@@ -2,8 +2,8 @@ import { AzuraServer } from "../core/Server";
 import { APIGatewayProxyHandler } from "aws-lambda";
 
 export function lambdaHandler(app: AzuraServer): APIGatewayProxyHandler {
-  return async (event, _ctx) => {
-    const { body, headers, httpMethod, path, queryStringParameters } = event;
+  return async (event) => {
+    const { headers, httpMethod, path } = event;
     let responseBody: any,
       status = 200;
     const fakeReq: any = {

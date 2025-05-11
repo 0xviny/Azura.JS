@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import { validateSchema } from "./SchemaValidator";
 
 export function DTO(schema: any): ParameterDecorator {
   return (target, prop, index) => {

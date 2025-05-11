@@ -20,7 +20,7 @@ export class JSONAdapter implements DBAdapter {
   private save() {
     require("fs").writeFileSync(this.file, JSON.stringify(this.db, null, 2));
   }
-  async find<T>(col: string) {
+  async find(col: string) {
     return this.db[col] || [];
   }
   async insert<T>(col: string, doc: T) {
@@ -29,7 +29,7 @@ export class JSONAdapter implements DBAdapter {
     this.save();
     return doc;
   }
-  async update<T>(col: string, q: any, u: any) {
+  async update(col: string, q: any, u: any) {
     const arr = this.db[col] || [];
     let count = 0;
     arr.forEach((d) => {
