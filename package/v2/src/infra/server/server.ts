@@ -108,10 +108,34 @@ export class AzuraServer {
   public patch = (p: string, ...h: RequestHandler[]) => this.addRoute("PATCH", p, ...h);
 
   public listen(port = this.port) {
-    if (!this.server) return;
+    try {
+      if (!this.server) {
+        logger("error", "Server not initialized");
+        return;
+      }
 
-    const who = cluster.isPrimary ? "Master" : "Worker";
-    this.server.listen(port, () => logger("info", `[${who}] listening on ${port}`));
+      const who = cluster.isPrimary ? "Master" : "Worker";
+      this.server.listen(port, () =>
+        logger("info", `[${who}] listening on http://localhost:${port}`)
+      );
+
+      if (this.opts?.server?.ipHost) this.getIP(port);
+    } catch (err: any) {
+      logger("error", err.message);
+      process.exit(1);
+    }
+  }
+
+  private getIP(port: number) {
+    const networkInterfaces = os.networkInterfaces();
+    Object.values(networkInterfaces).forEach((ifaceList) => {
+      ifaceList?.forEach((iface) => {
+        if (iface.family === "IPv4" && !iface.internal) {
+          const who = cluster.isPrimary ? "Master" : "Worker";
+          logger("info", `[${who}] accessible at http://${iface.address}:${port}`);
+        }
+      });
+    });
   }
 
   private async handle(rawReq: RequestServer, rawRes: ResponseServer) {

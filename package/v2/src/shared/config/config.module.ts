@@ -1,13 +1,12 @@
 import { existsSync, readFileSync } from "fs";
 import path from "path";
 import { load } from "js-yaml";
-import { pathToFileURL } from "url";
-import { HttpError } from "../utils/http.utils";
 
 export type Config = {
   server?: {
     port?: number;
     cluster?: boolean;
+    ipHost?: boolean;
     https?: boolean;
   };
   plugins?: {
