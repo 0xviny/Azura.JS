@@ -1,0 +1,82 @@
+{
+  "name": "@atosjs/azura",
+  "description": "Azura is a framework for building APIs with TypeScript and JavaScript.",
+  "version": "4.0.0",
+  "module": "dist/src/index.mjs",
+  "bin": {
+    "azura": "dist/cli/index.cjs"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.mjs",
+      "require": "./dist/src/index.cjs",
+      "types": "./dist/src/index.d.ts"
+    },
+    "./cli": {
+      "import": "./dist/cli/index.mjs",
+      "require": "./dist/cli/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/src/index.cjs",
+  "types": "dist/src/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xviny/AzuraV2.git",
+    "directory": "/"
+  },
+  "bugs": {
+    "url": "https://github.com/0xviny/AzuraV2/issues"
+  },
+  "homepage": "https://github.com/0xviny/AzuraV2#readme",
+  "keywords": [
+    "web",
+    "framework",
+    "api",
+    "node"
+  ],
+  "author": "Rabi & Wyntch",
+  "license": "ISC",
+  "scripts": {
+    "build": "tsup",
+    "lint": "eslint src --ext .ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.27.0",
+    "@types/aws-lambda": "^8.10.149",
+    "@types/bun": "latest",
+    "@types/ejs": "^3.1.5",
+    "@types/js-yaml": "^4.0.9",
+    "@types/mongodb": "^4.0.7",
+    "@types/pg": "^8.11.14",
+    "@types/ws": "^8.5.0",
+    "@vercel/node": "^5.1.14",
+    "aws-lambda": "^1.0.7",
+    "chokidar": "^4.0.3",
+    "cpy-cli": "^5.0.0",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.8",
+    "eslint": "^9.27.0",
+    "globals": "^16.0.0",
+    "graphql": "^16.11.0",
+    "jest": "^29.0.0",
+    "js-yaml": "^4.1.0",
+    "mongodb": "^6.16.0",
+    "pg": "^8.15.6",
+    "prom-client": "^14.0.0",
+    "redis": "^4.7.0",
+    "reflect-metadata": "^0.1.13",
+    "ts-jest": "^29.0.0",
+    "tsup": "^8.4.0",
+    "typescript-eslint": "^8.31.0",
+    "ws": "^8.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "cookie": "^1.0.2"
+  }
+}
