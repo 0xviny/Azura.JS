@@ -3,12 +3,22 @@ import "@/app/globals.css";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/components/language-provider";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  icons: [
+    {
+      rel: "icon",
+      url: "/images/azura-logo.png",
+    },
+  ],
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <title>@atosjs/azura - Modern, Fast, Scalable API Framework</title>
+        <title>Azura.JS - Modern, Fast, Scalable API Framework</title>
         <meta
           name="description"
           content="A modern, TypeScript-first framework for building high-performance APIs"
@@ -23,7 +33,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-
-export const metadata = {
-  generator: "v0.dev",
-};
