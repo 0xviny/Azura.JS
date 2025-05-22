@@ -1,4 +1,4 @@
-[![Azura](./assets/logo.png)](https://github.com/0xviny/AzuraV2)
+[![Azura](./assets/logo.png)](https://github.com/0xviny/Azura.JS)
 
 # Azura
 
@@ -200,7 +200,7 @@ my-api/
 Clone o repositório oficial:
 
 ```bash
-git clone https://github.com/0xviny/AzuraV2
+git clone https://github.com/0xviny/Azura.JS
 cd atosjs/packages/azura
 npm install
 npm run dev

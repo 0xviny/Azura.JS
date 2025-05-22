@@ -244,7 +244,7 @@ app.listen();
 
 ## 📞 Suporte
 
-Abra uma issue em [https://github.com/0xviny/AzuraV2](https://github.com/0xviny/AzuraV2) ou envie mensagem para o maintainer.
+Abra uma issue em [https://github.com/0xviny/Azura.JS](https://github.com/0xviny/Azura.JS) ou envie mensagem para o maintainer.
 
 ---
 

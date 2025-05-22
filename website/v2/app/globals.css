@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 270 70% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 270 30% 96.1%;
+    --secondary-foreground: 270 50% 20%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.9%;
+    --accent: 270 70% 96.1%;
+    --accent-foreground: 270 50% 20%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 270 20% 89.8%;
+    --input: 270 20% 89.8%;
+    --ring: 270 70% 40%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 270 30% 5%;
+    --foreground: 0 0% 98%;
+    --card: 270 25% 7%;
+    --card-foreground: 0 0% 98%;
+    --popover: 270 25% 7%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 270 70% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 270 30% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 270 30% 15%;
+    --muted-foreground: 0 0% 65.1%;
+    --accent: 270 30% 15%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 270 30% 20%;
+    --input: 270 30% 20%;
+    --ring: 270 70% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Estilos para melhorar a responsividade */
+@layer utilities {
+  .mobile-menu-open {
+    @apply fixed inset-0 z-50 bg-background/80 backdrop-blur-sm;
+  }
+
+  .mobile-menu {
+    @apply fixed inset-y-0 left-0 z-50 w-3/4 max-w-xs bg-background shadow-lg transform transition-transform duration-300 ease-in-out;
+  }
+
+  .mobile-menu-closed {
+    @apply -translate-x-full;
+  }
+
+  .mobile-menu-opened {
+    @apply translate-x-0;
+  }
+}
+
+/* Estilos adicionais para melhorar a aparência */
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500;
+}
+
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(to right, #9333ea, #ec4899, #f97316);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.glass-effect {
+  @apply bg-white/10 backdrop-blur-md dark:bg-black/20;
+}
+
+.sidebar-gradient {
+  background: linear-gradient(180deg, rgba(126, 34, 206, 0.05) 0%, rgba(107, 33, 168, 0.1) 100%);
+}
+
+.doc-content {
+  @apply max-w-3xl mx-auto px-4 py-6 md:px-6 lg:px-8;
+}
+
+.logo-shadow {
+  filter: drop-shadow(0 0 8px rgba(147, 51, 234, 0.5));
+}
+
+/* Novos estilos para o header */
+.header-nav-item {
+  @apply h-full flex items-center px-3 text-sm font-medium border-b-2 border-transparent hover:border-purple-500 transition-colors;
+}
+
+.header-nav-item.active {
+  @apply border-purple-500 text-purple-500;
+}
+
+.search-container {
+  @apply relative flex-1 max-w-md mx-auto;
+}
+
+@media (min-width: 768px) {
+  .search-container {
+    @apply mx-0;
+  }
+}

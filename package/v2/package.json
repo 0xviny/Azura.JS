@@ -24,13 +24,13 @@
   "types": "dist/src/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/0xviny/AzuraV2.git",
+    "url": "git+https://github.com/0xviny/Azura.JS.git",
     "directory": "/"
   },
   "bugs": {
-    "url": "https://github.com/0xviny/AzuraV2/issues"
+    "url": "https://github.com/0xviny/Azura.JS/issues"
   },
-  "homepage": "https://github.com/0xviny/AzuraV2#readme",
+  "homepage": "https://github.com/0xviny/Azura.JS#readme",
   "keywords": [
     "web",
     "framework",
