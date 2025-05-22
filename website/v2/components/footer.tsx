@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { Github, Twitter, Slack } from "lucide-react"
-import { useLanguage } from "@/components/language-provider"
+import { Github, Twitter, Slack } from "lucide-react";
+import { useLanguage } from "@/components/language-provider";
 
 export default function Footer() {
-  const { language } = useLanguage()
+  const { language } = useLanguage();
 
   const content = {
     en: {
@@ -28,7 +28,8 @@ export default function Footer() {
       copyright: "All rights reserved.",
     },
     pt: {
-      description: "Um framework moderno, com TypeScript em primeiro lugar, para construir APIs de alto desempenho.",
+      description:
+        "Um framework moderno, com TypeScript em primeiro lugar, para construir APIs de alto desempenho.",
       documentation: "Documentação",
       gettingStarted: "Primeiros Passos",
       coreConcepts: "Conceitos Principais",
@@ -47,9 +48,9 @@ export default function Footer() {
       license: "Licença",
       copyright: "Todos os direitos reservados.",
     },
-  }
+  };
 
-  const c = content[language]
+  const c = content[language];
 
   return (
     <footer className="py-12 bg-black text-gray-300">
@@ -59,13 +60,34 @@ export default function Footer() {
             <h3 className="mb-4 text-lg font-bold text-white">Azura.JS Framework</h3>
             <p className="text-gray-400">{c.description}</p>
             <div className="flex mt-4 space-x-4">
-              <a href="#" className="text-gray-400 hover:text-purple-400">
+              <a
+                href="https://github.com/0xviny/Azura.JS"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-purple-400 transition-colors"
+              >
                 <Github className="w-5 h-5" />
                 <span className="sr-only">GitHub</span>
               </a>
-              <a href="#" className="text-gray-400 hover:text-purple-400">
-                <Twitter className="w-5 h-5" />
-                <span className="sr-only">Twitter</span>
+              <a
+                href="https://www.npmjs.com/package/@atosjs/azura"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-purple-400 transition-colors"
+              >
+                <svg
+                  stroke="currentColor"
+                  fill="currentColor"
+                  stroke-width="0"
+                  viewBox="0 0 576 512"
+                  className="text-2xl cursor-pointer hover:text-red-500"
+                  height="1em"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M288 288h-32v-64h32v64zm288-128v192H288v32H160v-32H0V160h576zm-416 32H32v128h64v-96h32v96h32V192zm160 0H192v160h64v-32h64V192zm224 0H352v128h64v-96h32v96h32v-96h32v96h32V192z"></path>
+                </svg>
+                <span className="sr-only">NPM</span>
               </a>
               <a href="#" className="text-gray-400 hover:text-purple-400">
                 <Slack className="w-5 h-5" />
@@ -155,5 +177,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
